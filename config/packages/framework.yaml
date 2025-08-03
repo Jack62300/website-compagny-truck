@@ -1,0 +1,29 @@
+# see https://symfony.com/doc/current/reference/configuration/framework.html
+framework:
+    secret: '%env(APP_SECRET)%'
+    #csrf_protection: true
+
+    # Note that the session will be started ONLY if you read or write from it.
+    session: true
+
+    #esi: true
+    #fragments: true
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file
+
+    notifier:
+        # ...
+        channel_policy:
+            # Use SMS, Slack and email for urgent notifications
+            urgent: ['browser']
+
+            # Use Slack for highly important notifications
+            high: ['browser']
+
+            # Use browser for medium and low notifications
+            medium: ['browser']
+            low: ['browser']

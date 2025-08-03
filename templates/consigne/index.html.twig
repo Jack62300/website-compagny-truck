@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TWV | Consignes
+{% endblock %}
+
+{% block body %}
+	<div class="row container-fluid my-2 pb-2">
+		<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2">
+			<h1 class="text-quaternary">
+				<i class="fa-solid fa-shield-halved"></i>
+				Toutes les consignes reçu</h1>
+		</div>
+		<div class="col-md-12 col-lg-12 ">
+			<table class="table table-hover table-striped">
+				<thead class="tab01">
+					<tr>
+						<th>
+							ID
+						</th>
+						<th>
+							DATE
+						</th>
+						<th>
+							DEMANDEUR
+						</th>
+						<th>
+							TITRE
+						</th>
+						<th>
+							TYPE
+						</th>
+						<th>
+							ACTION
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for consigne in consignes %}
+						<tr>
+							<td class="align-middle">
+								<b>TWV_CONS-{{ consigne.id }}</b>
+							</td>
+							<td class="align-middle">{{ consigne.createdAt|date('d M Y') }}
+								<span class="badge badge-primary text-dark badge-xs">
+									<i class="fa-regular fa-clock"></i>
+									{{ consigne.createdAt|date('H:i') }}</span>
+							</td>
+							<td class="align-middle">{{ consigne.name }}</td>
+							<td class="align-middle">{{ consigne.title }}</td>
+
+							{% if consigne.status == 3 %}
+								<td>
+									<span class="badge badge-warning text-dark badge-xs badge-prio">
+										<i class="fa-solid fa-triangle-exclamation"></i>
+										URGENT</span>
+								</td>
+							{% elseif consigne.status == 2 %}
+								<td>
+									<span class="badge badge-secondary text-light badge-xs">
+										<i class="fa-solid fa-car-on"></i>
+										PRIORITAIRE</span>
+								</td>
+							{% elseif consigne.status == 1 %}
+								<td>
+									<span class="badge badge-primary text-dark badge-xs">
+										<i class="fa-solid fa-circle-info"></i>
+										INFORMATION</span>
+								</td>
+							{% elseif consigne.status == 0 %}
+								<td>
+									<span class="badge badge-tertiary text-light badge-xs">
+										<i class="fa-solid fa-rss"></i>
+										NOUVEAU</span>
+								</td>
+							{% endif %}
+
+
+							<td>
+								<button class="btn btn-modern btn-quaternary custombtn align-middle" data-bs-toggle="modal" data-bs-target="#{{consigne.id}}">
+									<i class="fa-solid fa-eye"></i>
+									VOIR
+								</button>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% for consigne in consignes %}
+				<div class="modal fade" id="{{consigne.id}}" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title" id="largeModalLabel">{{consigne.title}}</h4>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+								<p>{{consigne.content|raw}}</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-light" data-bs-dismiss="modal">Quitter</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

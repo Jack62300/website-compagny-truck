@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation TWV PARK
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl">
+	<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2" style="margin-left:20px;">
+		<h4 class="text-quaternary">
+			<i class="fa-solid fa-shield-halved"></i>
+			Reservation Enregistré</h4>
+	</div>
+	<button class="btn btn-3d btn-warning mb-2 custombtn" data-bs-toggle="modal" data-bs-target="#formResa">
+										<i class="fa-solid fa-plus"></i> AJOUTER
+						</button>
+	<div class="container-fluid containerJack">
+		<table class="table table-striped">
+		 <caption><h4 class="text-light">Information colorisation du tableau</h4>
+			<span class="badge text-bg-danger">ANNULER</span>
+			<span class="badge text-bg-warning">SORTIE DU PARKING</span>
+			<span class="badge text-bg-info">SUR LE PARKING</span>
+			<span class="badge text-bg-secondary">RESERVATION EN COURT</span>
+		</caption>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>COMPAGNIE</th>
+					<th>PLAQUE</th>
+					<th>FRIGO</th>
+					<th>TYPE</th>
+					<th>HEURE ARRIVER</th>
+					<th>HEURE DE DEPART</th>
+					<th>ID DE TRANSACTION</th>
+					<th>ACTIONS</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+				{% for reservation in reservations %}
+				{% if reservation.status == 3 %}
+				<tr class="table-danger">
+				{% elseif reservation.status == 2 %}
+				<tr class="table-warning">
+				{% elseif reservation.status == 1 %}
+				<tr class="table-info">
+				{% else %}
+				<tr>
+				{% endif %}
+				<td>
+				{% if reservation.type == "TRAVIS" %}
+					<img src="{{asset('img/reservation/travissf.png')}}" style="max-width 30px !important;max-height 30px !important;">
+				{% elseif reservation.type == "OTTRO" %}
+					<img src="{{asset('img/reservation/travissf.png')}}" style="max-width 30px !important;max-height 30px !important;">
+				{% elseif reservation.type == "SITE TWV" %}
+					<img src="{{asset('img/TWV_logo_JAUNE.png')}}" style="max-width 30px !important;max-height 30px !important;">
+				{% elseif reservation.type == "STEROO" %}
+					<img src="{{asset('img/TWV_logo_JAUNE.png')}}" style="max-width 30px !important;max-height 30px !important;">
+				{% elseif reservation.type == "EMAIL AUTRE" %}
+					<img src="{{asset('img/reservation/email.png')}}" style="max-width 30px !important;max-height 30px !important;">
+				{% elseif reservation.type == "EMAIL COMPTE CLIENT" %}
+					<img src="{{asset('img/reservation/compte.png')}}" style="max-width 30px !important;max-height 30px !important;">
+				{% endif %}
+
+				</td>
+				<td>{{reservation.compagnie|upper}}</td>
+				<td>{{reservation.plate|upper}}</td>
+				<td>{% if reservation.frigo == 1 %}
+					<span class="badge badge-secondary text-light badge-md">OUI</span>
+				{% else %}
+				<span class="badge badge-quaternary text-light badge-md">NON</span>
+				{% endif  %}
+				</td>
+				<td>{{reservation.type|upper}}</td>
+				<td>{{reservation.heureArrival|upper}}</td>
+				<td>{{reservation.maxHeure|upper}}</td>
+				<td>{{reservation.idTransaction|upper}}</td>
+				<td>
+				{% if reservation.status == 0 %}
+				<a href="{{ path('app_status_edit', {'id': reservation.id, 'status': "1"}) }}" class="btn btn-outline btn-rounded btn-tertiary  btn-with-arrow mb-2">VALIDER<span><i class="fas fa-chevron-right"></i></span></a>
+				<a href="{{ path('app_status_edit', {'id': reservation.id, 'status': "3"}) }}" class="btn btn-outline btn-rounded btn-secondary  btn-with-arrow mb-2">ANNULER<span><i class="fas fa-chevron-right"></i></span></a>
+				{% elseif reservation.status == 1 %}
+				<a href="{{ path('app_status_edit', {'id': reservation.id, 'status': "2"}) }}" class="btn btn-outline btn-rounded btn-secondary  btn-with-arrow mb-2">SORTIE<span><i class="fas fa-chevron-right"></i></span></a>
+				{% elseif reservation.status == 2 %}
+				CAMION SORTIE
+				{% elseif reservation.status == 3 %}
+				RESERVATION ANNULER
+				{% endif %}
+				</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{{ knp_pagination_render(reservations) }}
+	</div>
+
+	<div class="modal fade" id="formResa" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="formModalLabel">Enregistrement de réservation</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+						
+							<div class="form-group row align-items-center">
+								{{ form_start(form) }}
+										<div class="my-custom-class-for-errors">
+											{{ form_errors(form) }}
+										</div>
+								<div class="col-sm-9">
+									{{ form_row(form.compagnie) }}
+								</div>
+								<div class="col-sm-9">
+									{{ form_row(form.plate) }}
+								</div>
+								
+								<div class="col-sm-9">
+									{{ form_row(form.frigo) }}
+								</div>
+								<div class="col-sm-9">
+									{{ form_row(form.maxHeure) }}
+								</div>
+								<div class="col-sm-9">
+									{{ form_row(form.type) }}
+								</div>
+								<div class="col-sm-9">
+									{{ form_row(form.heureArrival) }}
+								</div>
+								<div class="col-sm-9">
+									{{ form_row(form.idTransaction) }}
+								</div>
+								<div class="col-sm-9">
+									{{ form_row(form.status) }}
+								</div>
+								
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+							
+								
+							</div>
+							<div class="modal-footer">
+						<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Enregistrer</button>
+					</div>
+					{{ form_end(form) }}	
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		</div>
+{% endblock %}

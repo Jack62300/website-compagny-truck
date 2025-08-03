@@ -1,0 +1,684 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil de TWV PARK
+{% endblock %}
+
+{% block body %}<div class="container-xxl">
+	<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2 top" style="margin-left:20px;">
+		<h4 class="text-quaternary">
+			<i class="fa-solid fa-shield-halved"></i>
+			Consignes</h4>
+	</div>
+
+	<div class="row my-2 pb-2">
+		{% if consignes is null or consignes is empty %}
+			<div class="alert alert-info">
+				<strong>
+					<i class="fa-solid fa-microphone"></i>
+					INFORMATION</strong>
+				Il n'y à pas de consigne pour le moment
+			</div>
+		{% else %}
+			{% for consigne in consignes %}
+				<div class="col-lg-4">
+					<article class="post post-large">
+						<div class="post-date">
+							<span class="day text-dark">{{consigne.createdAt|date('d')}}</span>
+							<span class="month text-dark">{{consigne.createdAt|date('M')}}</span>
+						</div>
+
+						<div class="post-content">
+							<h4>
+								<a href="blog-post.html" class="text-decoration-none text-dark">{{consigne.title}}</a>
+							</h4>
+							<blockquote class="blockquote-dark">
+								<p>{{consigne.content|raw}}</p>
+								{# <footer>Someone famous in <cite title="Source Title">Source Title</cite></footer> #}
+							</blockquote>
+
+							<div class="post-meta">
+								<span class="text-dark">
+									<i class="far fa-user"></i>
+									Par
+									{{consigne.name}}</span>
+								<i class="fa-solid fa-list"></i>
+								{% if consigne.pieceJointe is null or consigne.pieceJointe is empty %}
+									{% else %}
+										<a class="text-color-dark btn btn-primary" href="{{consigne.pieceJointe}}" target="_blank">Piéce jointe</a>
+								{% endif %}
+								<span>
+
+									{% if consigne.status == 'URGENT' %}
+										<span class="badge badge-warning text-dark badge-xs badge-prio">
+											<i class="fa-solid fa-triangle-exclamation"></i>
+											{{consigne.status}}</span>
+									{% elseif consigne.status == 'PRIORITAIRE' %}
+										<span class="badge badge-secondary text-light badge-xs">
+											<i class="fa-solid fa-car-on"></i>
+											{{consigne.status}}</span>
+									{% elseif consigne.status == 'INFORMATION' %}
+										<span class="badge badge-primary text-dark badge-xs">
+											<i class="fa-solid fa-circle-info"></i>
+											{{consigne.status}}</span>
+									{% elseif consigne.status == 'NEW' %}
+										<span class="badge badge-tertiary text-light badge-xs">
+											<i class="fa-solid fa-rss"></i>
+											NOUVEAU</span>
+									{% endif %}
+								</span>
+							</div>
+
+							<a href="{{path('app_consigne')}}" class="read-more text-color-dark font-weight-bold text-2 btn btn-primary">Voir plus
+								<i class="fas fa-chevron-right text-1 ms-1"></i>
+							</a>
+						</div>
+					</article>
+				</div>
+
+			{% endfor %}
+		{% endif %}
+
+	</div>
+{% if is_granted('ROLE_EXPLOITATION') %}
+	<div class="col-lg-12">
+
+		<div class="card border-radius-1 bg-color-light border-2 box-shadow-1">
+			<div class="card-body py-3 px-2">
+				<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2">
+					<h4 class="text-quaternary">
+						<i class="fa-solid fa-trailer"></i>
+						Remorque seul</h4>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>
+									<i class="fa-solid fa-tag"></i>
+									Compagnie</th>
+								<th>
+									<i class="fa-solid fa-address-card"></i>
+									Plaque Remorque</th>
+								<th>
+									<i class="fa-solid fa-cube"></i>
+									Calle ?</th>
+								<th>
+									<i class="fa-solid fa-calendar-days"></i>
+									Date d'entrée</th>
+								<th>
+									<i class="fa-solid fa-calendar-days"></i>
+									Frigo ON ?</th> 
+								<th>
+									<i class="fa-solid fa-calendar-days"></i>
+									Temps Passé</th>
+								<th>
+									<i class="fa-solid fa-user-shield"></i>
+									Agent</th>
+								<th>
+									<i class="fa-solid fa-user-shield"></i>
+									Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% if remorques is null or remorques is empty %}
+
+								<div class="alert alert-info">
+									<strong>Remorque</strong>
+									Aucune donnée pour le moment
+								</div>
+							{% else %}
+								{% for remorque in remorques %}
+									{# Date enregistrée en base de données #}
+									{# Date enregistrée en base de données #}
+									{% set dateEnregistree = remorque.dateEnter %}
+
+									{# Date et heure actuelles #}
+									{% set dateActuelle = "now"|date("Y-m-d H:i:s", 'Europe/Paris') %}
+
+									{# Calcul de la différence #}
+									{% set difference = date(dateActuelle).diff(date(dateEnregistree)) %}
+
+									{# Conversion des jours en heures et ajout des heures de l'interval #}
+									{% set tempsTotalEnHeures = difference.days * 24 + difference.h %}
+
+									{# Affichage du temps total en heures #}
+
+									{# Affichage de la différence #}
+
+										{% if remorque.status == 0 %}
+											<tr class="table-danger">
+										{% else %}
+											<tr class="table-info">
+											{% endif %}
+											<td>{{ remorque.compagnie|upper  }}</td>
+											<td>{{ remorque.plate|upper  }}</td>
+											<td>{% if remorque.calle == 1 %}
+											<span class="badge text-bg-success">OUI</span>
+											{% else %}
+											<span class="badge text-bg-success">NON</span>
+											{% endif %}</td>
+											<td>{{ remorque.dateEnter|date('d M Y, H:i') }}</td>
+											<td>{% if remorque.isFridge == true %}<span class="badge text-bg-success">FRIGO ON</span>{% else %}<span class="badge text-bg-danger">FRIGO OFF</span>{% endif %}</td>
+											{% if remorque.status == 0 %}
+											<td>Remorque sortie</td>
+											{% else %}
+											<td>La remorque est là depuis
+												{% if  difference.h > 0 or difference.i > 0  %}
+													{% if difference.days > 0 %}
+														<span class="badge badge-quaternary">{{ difference.days }}
+															jour{{ difference.days > 1 ? 's' : '' }}</span>
+													{% endif %}
+													{% if difference.h > 0 %}
+														<span class="badge badge-quaternary">{{ difference.h }}
+															heure{{ difference.h > 1 ? 's' : '' }}</span>
+													{% endif %}
+													{% if difference.i > 0 %}
+														<span class="badge badge-quaternary">{{ difference.i }}
+															minute{{ difference.i > 1 ? 's' : '' }}</span>
+													{% endif %}.</td>
+											{%  else %}
+
+												<td>
+													Moins d'une heure
+												</td>
+
+											{% endif %}
+											{% endif %}
+											<td>{{ remorque.agent }}</td>
+											{% if remorque.status == 1 %}
+												<td>
+													<a href="{{path('app_remedit', {'id': remorque.id })}}">
+														<button class="btn btn-3d btn-danger mb-2 custombtn">SORTIE</button>
+													</a>
+												</td>
+											{% else %}
+												<td>Aucune action disponible remorque sortie</td>
+											{%  endif  %}
+										</tr>
+									{% endfor %}
+								{% endif %}
+							</tbody>
+						</tbody>
+					</table>
+					{{ knp_pagination_render(remorques) }}
+					<button class="btn btn-3d btn-warning mb-2 custombtn" data-bs-toggle="modal" data-bs-target="#formRem">
+						<i class="fa-solid fa-plus"></i>
+						AJOUTER
+					</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endif %}
+
+	<div class="row my-4 pb-4">
+		<div class="col-md-6">
+
+			<div class="card border-radius-1 bg-color-light border-2 box-shadow-1">
+				<div class="card-body py-3 px-2">
+					<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2">
+						<h4 class="text-quaternary">
+							<i class="fa-solid fa-key"></i>
+							Prêt de Clef</h4>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>
+										<i class="fa-solid fa-key"></i>
+										Numéro/Intitulé</th>
+									<th>
+										<i class="fa-solid fa-id-card-clip"></i>
+										Nom du demandeur</th>
+									<th>
+										<i class="fa-solid fa-user-shield"></i>
+										Nom de l'agent</th>
+									<th>
+										<i class="fa-solid fa-calendar-days"></i>
+										Date</th>
+									<th>
+										<i class="fa-solid fa-user-shield"></i>
+										Action</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								{% if keys is null or keys is empty %}
+
+									<div class="alert alert-info">
+										<strong>CLEF</strong>
+										Aucune clef prêter pour le moment
+									</div>
+								{% else %}
+									{% for key in keys %}
+
+										<tr>
+											<td>{{ key.intituler }}</td>
+											<td>{{ key.name }}</td>
+											<td>{{ key.agent }}</td>
+											{# Heure actuelle #}
+											<td>{{ key.createdAt|date('d M Y, H:i') }}</td>
+											<td>
+												<div class="btn-group">
+
+</div>
+									<div class="btn-group">
+										<button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+											<i class="fa-solid fa-chevron-down"></i>
+										</button>
+										<ul class="dropdown-menu">
+											<li><a href="{{path('app_keyedit', {'id': key.id })}}" class="dropdown-item" >Clef restituer</a></li>
+										</ul>
+										</div>
+											</td>
+											<!-- Example single danger button -->
+
+											{# {% if key. %}																			 #}
+										</tr>
+
+										<!-- Example single danger button -->
+
+
+
+									{% endfor %}
+								{% endif %}
+							</tbody>
+						</table>
+						{# <a href="#" class="btn btn-3d btn-warning mb-2 custombtn">AJOUTER</a> #}
+						<button class="btn btn-3d btn-warning mb-2 custombtn" data-bs-toggle="modal" data-bs-target="#formKey">
+							<i class="fa-solid fa-plus"></i>
+							AJOUTER
+						</button>
+						{# {{ knp_pagination_render(keys) }} #}
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+		{% if is_granted('ROLE_SECURITY') %}
+		<div class="col-lg-6">
+
+			<div class="card border-radius-1 bg-color-light border-2 box-shadow-1">
+				<div class="card-body py-3 px-2">
+					<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2">
+						<h4 class="text-quaternary">
+							<i class="fa-solid fa-gas-pump"></i>
+							Niveau Gas log</h4>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>
+										<i class="fa-solid fa-signal"></i>
+										Niveau</th>
+									<th>
+										<i class="fa-solid fa-user-shield"></i>
+										Agent</th>
+									<th>
+										<i class="fa-solid fa-calendar-days"></i>
+										Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% if gass is null or gass is empty %}
+
+									<div class="alert alert-info">
+										<strong>GAS LOG</strong>
+										Aucune donnée pour le moment
+									</div>
+								{% else %}
+									{% for gas in gass %}
+										<tr>
+											{% if gas.niveau <= 30 %}
+												<td class="table-danger">
+													<i class="fa-solid fa-triangle-exclamation"></i>
+													{{ gas.niveau  }}
+													(NIVEAU TROP BAS)</td>
+											{% else %}
+												<td class="table-success">{{ gas.niveau  }}</td>
+											{%  endif %}
+											<td>{{ gas.agent  }}</td>
+											<td>{{ gas.createdAt|date('d M Y, H:i') }}</td>
+										</tr>
+									{% endfor %}
+								{% endif %}
+							</tbody>
+						</table>
+						<button class="btn btn-3d btn-warning mb-2 custombtn" data-bs-toggle="modal" data-bs-target="#formGas">
+							<i class="fa-solid fa-plus"></i>
+							AJOUTER
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		{% endif %}
+		{% if is_granted('ROLE_SECURITY') %}
+		<div class="col-lg-6">
+
+			<div class="card border-radius-1 bg-color-light border-2 box-shadow-1">
+				<div class="card-body py-3 px-2">
+					<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2">
+						<h4 class="text-quaternary">
+							<i class="fa-solid fa-shower"></i>
+							Niveau Adoucisseur P2</h4>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>
+										<i class="fa-solid fa-cube"></i>
+										Sac Restant</th>
+									<th>
+										<i class="fa-solid fa-cube"></i>
+										Sac Utiliser</th>
+									<th>
+										<i class="fa-solid fa-user-shield"></i>
+										Agent</th>
+									<th>
+										<i class="fa-solid fa-message"></i>
+										Commentaire</th>
+									<th>
+										<i class="fa-solid fa-calendar-days"></i>
+										Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% if adous is null or adous is empty %}
+
+									<div class="alert alert-info">
+										<strong>Adoucisseur P2</strong>
+										Aucune donnée pour le moment
+									</div>
+								{% else %}
+									{% for adou in adous %}
+										<tr>
+											{% if adou.sacRestant <= 10 %}
+												<td class="table-danger">
+													<i class="fa-solid fa-sack-xmark"></i>
+													{{ adou.sacRestant  }}
+													(NOMBRE DE SAC TROP BAS)</td>
+											{% else %}
+												<td class="table-success">
+													<i class="fa-solid fa-check-to-slot"></i>
+													{{ adou.sacRestant  }}</td>
+											{%  endif %}
+											<td>{{ adou.sacUse }}</td>
+											<td>{{ adou.agent }}</td>
+											<td>{{ adou.commentaire }}</td>
+											<td>{{ adou.createdAt|date('d M Y, H:i') }}</td>
+										</tr>
+									{% endfor %}
+								{% endif %}
+							</tbody>
+						</table>
+
+						<button class="btn btn-3d btn-warning mb-2 custombtn" data-bs-toggle="modal" data-bs-target="#formAdou">
+							<i class="fa-solid fa-plus"></i>
+							AJOUTER
+						</button>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+{% endif %}
+{% if is_granted('ROLE_EXPLOITATION') %}
+		<div class="col-lg-6">
+
+			<div class="card border-radius-1 bg-color-light border-2 box-shadow-1">
+				<div class="card-body py-3 px-2">
+					<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2">
+						<h4 class="text-quaternary">
+							<i class="fa-solid fa-shower"></i>
+							Lésive P1</h4>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>
+										<i class="fa-solid fa-cube"></i>
+										Stock Bidon</th>
+									<th>
+										<i class="fa-solid fa-user-shield"></i>
+										Agent</th>
+									<th>
+										<i class="fa-solid fa-calendar-days"></i>
+										Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% if lesives is null or lesives is empty %}
+
+									<div class="alert alert-info">
+										<strong>Lessive P1</strong>
+										Aucune donnée pour le moment
+									</div>
+								{% else %}
+									{% for lesive in lesives %}
+										<tr>
+											{% if lesive.stock <= 10 %}
+												<td class="table-danger">
+													<i class="fa-solid fa-jug-detergent"></i>
+													{{ lesive.stock  }}
+													(NOMBRE DE BIDON TROP BAS)</td>
+											{% else %}
+												<td class="table-success">
+													<i class="fa-solid fa-jug-detergent"></i>
+													{{ lesive.stock }}</td>
+											{%  endif %}
+											<td>{{ lesive.agent }}</td>
+											<td>{{ lesive.createdAt|date('d M Y, H:i') }}</td>
+										</tr>
+									{% endfor %}
+								{% endif %}
+							</tbody>
+						</table>
+
+						<button class="btn btn-3d btn-warning mb-2 custombtn" data-bs-toggle="modal" data-bs-target="#formLesive">
+							<i class="fa-solid fa-plus"></i>
+							AJOUTER
+						</button>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+{% endif %}
+		{# modal key add   #}
+		<div class="modal fade" id="formKey" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="formModalLabel">Enregistrement Prêt de clef</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+
+						<div class="form-group row align-items-center">
+							{{ form_start(form) }}
+							<div class="my-custom-class-for-errors">
+								{{ form_errors(form) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form.name) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form.createdAt) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form.intituler) }}
+							</div>
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Enregistrer</button>
+						</div>
+						{{ form_end(form) }}
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		{#  modal gas add  #}
+		<div class="modal fade" id="formGas" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="formModalLabel">Enregistrement Contrôle Gas Logistique</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+
+						<div class="form-group row align-items-center">
+							{{ form_start(form2) }}
+							<div class="my-custom-class-for-errors">
+								{{ form_errors(form2) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form2.niveau) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form2.createdAt) }}
+							</div>
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Enregistrer</button>
+						</div>
+						{{ form_end(form2) }}
+					</div>
+
+				</div>
+			</div>
+		</div>
+		{#  modal adoucisseur add  #}
+		<div class="modal fade" id="formAdou" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="formModalLabel">Enregistrement Contrôle Adoucisseur P2</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+
+						<div class="form-group row align-items-center">
+							{{ form_start(form3) }}
+							<div class="my-custom-class-for-errors">
+								{{ form_errors(form3) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form3.sacRestant) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form3.sacUse) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form3.createdAt) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form3.agent) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form3.commentaire) }}
+							</div>
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Enregistrer</button>
+						</div>
+						{{ form_end(form3) }}
+					</div>
+
+				</div>
+			</div>
+		</div>
+		{#  modal adoucisseur add  #}
+		<div class="modal fade" id="formRem" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="formModalLabel">Enregistrement de remorque</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+
+						<div class="form-group row align-items-center">
+							{{ form_start(form4) }}
+							<div class="my-custom-class-for-errors">
+								{{ form_errors(form4) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form4.compagnie) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form4.plate) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form4.dateEnter) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form4.isFridge) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form4.calle) }}
+							</div>
+
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Enregistrer</button>
+						</div>
+						{{ form_end(form4) }}
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="modal fade" id="formLesive" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="formModalLabel">Controlle Lesive P1</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+
+						<div class="form-group row align-items-center">
+							{{ form_start(form5) }}
+							<div class="my-custom-class-for-errors">
+								{{ form_errors(form5) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form5.stock) }}
+							</div>
+							<div class="col-sm-9">
+								{{ form_row(form5.createdAt) }}
+							</div>
+							
+
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Enregistrer</button>
+						</div>
+						{{ form_end(form5) }}
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

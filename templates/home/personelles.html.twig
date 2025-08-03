@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste du personelles TWV
+{% endblock %}
+
+{% block body %}
+
+	<div class="container text-center">
+		<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2 top" style="margin-left:20px;">
+			<h4 class="text-quaternary">
+				<i class="fa-solid fa-users"></i>
+				Liste du personelles TWV PARKING</h4>
+		</div>
+
+
+		<div class="row row-cols-2">
+			{% for personelle in personelles %}
+				{% if personelle.secteur == "PARK" %}
+					<div class="col">
+						<div class="card mb-3" style="max-width: 540px;">
+							<div class="row g-0">
+								<div class="col-md-4">
+									<img src="{{ vich_uploader_asset(personelle, 'imageFile') }}" class="img-fluid rounded-start" style="min-width:200px; min-height:200px;" alt="image du personnels TWV">
+								</div>
+								<div class="col-md-8">
+									<div class="card-body">
+										<h5 class="card-title">{{personelle.nom}}
+											{{personelle.prenom}}
+											<span class="badge text-bg-info">{{personelle.role}}</span>
+										</h5>
+
+										<p class="card-text">
+											<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#personelle{{personelle.id}}">
+												Voir le/les véhicules
+											</button>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+		<div class="container text-center">
+			<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2 top" style="margin-left:20px;">
+				<h4 class="text-quaternary">
+					<i class="fa-solid fa-users"></i>
+					Liste du personelles TWV LOGISTIQUE</h4>
+			</div>
+			<div class="row row-cols-2">
+				{% for personelle in personelles %}
+					{% if personelle.secteur == "LOGISTIQUE" %}
+						<div class="col">
+							<div class="card mb-3" style="max-width: 540px;">
+								<div class="row g-0">
+									<div class="col-md-4">
+										<img src="{{ vich_uploader_asset(personelle, 'imageFile') }}" class="img-fluid rounded-start" style="min-width:200px; min-height:200px;" alt="image du personnels TWV">
+									</div>
+									<div class="col-md-8">
+										<div class="card-body">
+											<h5 class="card-title">{{personelle.nom}}
+												{{personelle.prenom}}
+												<span class="badge text-bg-info">{{personelle.role}}</span>
+											</h5>
+
+											<p class="card-text">
+												<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#personelle{{personelle.id}}">
+													Voir le/les véhicules
+												</button>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+			<div class="container text-center">
+				<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2 top" style="margin-left:20px;">
+					<h4 class="text-quaternary">
+						<i class="fa-solid fa-users"></i>
+						Liste du personelles TWV DIRECTION</h4>
+				</div>
+				<div class="row row-cols-2">
+					{% for personelle in personelles %}
+						{% if personelle.secteur == "DIRECTION" %}
+							<div class="col">
+								<div class="card mb-3" style="max-width: 540px;">
+									<div class="row g-0">
+										<div class="col-md-4">
+											<img src="{{ vich_uploader_asset(personelle, 'imageFile') }}" class="img-fluid rounded-start" style="min-width:200px; min-height:200px;" alt="image du personnels TWV">
+										</div>
+										<div class="col-md-8">
+											<div class="card-body">
+												<h5 class="card-title">{{personelle.nom}}
+													{{personelle.prenom}}
+													<span class="badge text-bg-info">{{personelle.role}}</span>
+												</h5>
+
+												<p class="card-text">
+													<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#personelle{{personelle.id}}">
+														Voir le/les véhicules
+													</button>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+
+			{% for personelle in personelles %}
+				<div class="modal fade" id="personelle{{personelle.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">Véhicule de
+									{{personelle.nom}}
+									-
+									{{personelle.prenom}}</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								{% for vehicle in personelle.vehicles %}
+									{% if vehicle is null or vehicle is empty %}
+										Aucun Véhicule
+									{% else %}
+									{% if vehicle.personelle.id == personelle.id %}
+										<div class="card mb-3" style="max-width: 540px;">
+										<div class="row g-0">
+											<div class="col-md-4">
+											<a href="/file/personelle/vehicles/{{vehicle.imageName}}" target="_blank"><img style="height:100%;" src="{{ vich_uploader_asset(vehicle, 'imageFile') }}" class="img-fluid rounded-start" alt="{{vehicle.imageName}}"></a>
+											</div>
+											<div class="col-md-8">
+											<div class="card-body">
+												<h5 class="card-title"><b>Plaque : </b> {{vehicle.plate}}</h5>
+												<p class="card-text"><b>Model :</b> {{vehicle.model}}</p>
+												<p class="card-text"><b>Couleur :</b> <div style="background-color:{{vehicle.couleur}}; width:100%; height:50px; border: solid 2px black;"></div></p>
+											</div>
+											</div>
+										</div>
+										</div>
+					
+									{% endif %}
+									{% endif %}
+								{% endfor %}
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		{% endblock %}

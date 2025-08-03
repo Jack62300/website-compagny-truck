@@ -1,0 +1,118 @@
+:root {
+    /* make the backend contents as wide as the browser window */
+    --body-max-width: 100%;
+    /* change the background color of the  */
+    --body-bg: #262626;
+    /* make the base font size smaller */
+    --font-size-base: 13px;
+    /* remove all border radius to make corners straight */
+    --border-radius: 0px;
+}
+.sidebar{
+	background-color:#262626;
+	color: white;
+}
+.content-top {
+	background-color:#262626;
+	color: white;
+}
+#main-menu .menu .menu-item.active {
+    color: #262626;
+	background-color: #FFC500;
+	border-radius:2px;
+}
+#main-menu .menu .menu-header {
+    color: #262626;
+	background-color: #FFC500;
+	padding:10px;
+	border-radius: 5px;
+	/* border-top-right-radius: 5px; */
+}
+
+#main-menu .menu .menu-item {
+padding:5px;
+color:white;
+font-weight: bold;
+}
+
+.btn-primary, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):not(.btn-danger):active, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):not(.btn-danger):active:focus, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):not(.btn-danger):focus, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):not(.btn-danger):hover {
+    color: #262626;
+	background-color: #FFC500;
+	padding: 10px;
+	border-radius: 5px;
+	border-color: #FFC500;
+}
+.btn-secondary, .btn-secondary.disabled, .btn-secondary[disabled] {
+    background-color: #8d0b0b;
+    color: white;
+	padding: 10px;
+	border-radius: 5px;
+	border-color: #8d0b0b;
+}
+.datagrid td.actions a:not(.dropdown-item) {
+    background-color:#FFC500;
+	color:#262626;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.datagrid .dropdown-actions .dropdown-toggle:hover {
+    background-color:#FFC500;
+	color:#262626;
+}
+/* .table > thead {
+	background-color: #FFC500 !important;
+	color: #262626 !important;
+	padding: 10px !important;
+} */
+
+thead tr{
+	border-radius: 10px !important;
+}
+thead tr th{
+	background-color: #FFC500 !important;
+	color: #262626 !important;
+	padding: 10px !important;
+	border: solid 1px #262626 !important;
+}
+tbody tr{
+	background-color: #262626 !important;
+	color: #fff !important;
+	padding: 10px !important;
+}
+tbody tr td{
+	background-color: #262626 !important;
+	color: #fff !important;
+	padding: 10px !important;
+}
+
+thead tr th a{
+	color: #262626 !important;
+}
+thead tr th span{
+	color: #262626 !important;
+}
+thead tr th .fa{
+	color:#ffffff;
+}
+.content-header-title .title {
+
+	padding: 10px;
+	border: solid 3px #363535;
+	color: #ffffff;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	max-width: 920px;
+	min-width: 920px;
+}
+
+@media only screen and (min-device-width : 300px) and (max-device-width : 1180px) {
+	.logotop{
+		max-width:100px;
+		max-height:100px;
+	}
+	.table .datagrid > tbody{
+		padding:10px;
+		
+	}
+}

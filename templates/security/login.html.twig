@@ -1,0 +1,62 @@
+{% extends 'baseError.html.twig' %}
+
+{% block title %}Log in!
+{% endblock %}
+{% block body %}
+<div class="d-flex align-items-center justify-content-center conntaintest">
+	<div class="contain-login ">
+		<div class="row justify-content-center align-middle">
+			<div class="col-md-12 col-lg-12 mb-12">
+			<img src="{{asset('img/TWV_logo_JAUNE-BLANC.png')}}" class="img-fluid mx-auto d-block">
+					<div class="heading text-quaternary heading-border heading-bottom-border my-4 pb-2">
+                        <h4 class="text-light">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Connexion TWV</h4>
+                    </div>
+				<form id="frmSignIn" method="post" class="needs-validation">
+					{% if error %}
+						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+					{% endif %}
+					{% if app.user %}
+						<div class="mb-3">
+							Vous êtes connecté avec 
+							{{ app.user.userIdentifier }},
+							<a href="{{ path('app_logout') }}">Déconnexion</a>
+						</div>
+					{% endif %}
+					<div class="row">
+						<div class="form-group col mx-auto">
+							<label class="form-label text-color-dark text-3">Adresse Email
+								<span class="text-color-danger">*</span>
+							</label>
+							<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control form-control-lg text-4" required>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col mx-auto">
+							<label class="form-label text-color-dark text-3">Mot de Passe
+								<span class="text-color-danger">*</span>
+							</label>
+							<input type="password" name="password" id="inputPassword" class="form-control form-control-lg text-4" required>
+						</div>
+					</div>
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    
+					<div class="row justify-content-between">
+
+						<div class="form-group col-md-auto mx-auto">
+							{# <a class="text-decoration-none text-color-dark text-color-hover-primary btn btn-danger font-weight-semibold text-2" href="#"><i class="fa-solid fa-unlock-keyhole"></i> Mot de passe perdu?</a> #}
+                            <button class="read-more text-color-dark font-weight-bold text-2 btn btn-primary align-middle btn-perso" style="width:100% !important;"><i class="fa-solid fa-right-to-bracket"></i> CONNEXION</button>
+						</div>
+						<div class="alert alert-warning">
+										<strong>INFORMATION</strong> En cas de perte de mot de passe merci de contacté un administrateur.
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+		</div>
+	</div>
+    </div>
+{% endblock %}

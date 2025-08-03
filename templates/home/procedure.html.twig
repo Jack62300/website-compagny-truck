@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Procédure de TWV PARK
+{% endblock %}
+
+{% block body %}
+
+	<div role="main" class="main">
+
+		<section class="page-header page-header-modern bg-color-grey page-header-md">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 align-self-center p-static order-2 text-center">
+						<h1 class="text-dark font-weight-bold text-8">{{procedure.title}}</h1>
+						<span class="sub-title text-dark">PROCEDURE TWV PARK</span>
+						{# <a class="btn btn-3d btn-secondary btn-xs mb-2" target="_blank" href="{{path('app_pdf_generator',{'id': procedure.id})}}">EXPORT PDF</a> #}
+					</div>
+					<div class="col-md-12 align-self-center order-1"></div>
+				</div>
+			</div>
+		</section>
+
+		{% if procedure.notice is not null or procedure.notice is not empty %}
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				
+				<strong>
+					<i class="fas fa-exclamation-triangle"></i>INFORMATION IMPORTANTE</strong>
+				{{procedure.notice|raw}}
+			</div>
+		{% endif %}
+		<div class="container py-4 containerProcedure">
+
+			<div class="row">
+				<div class="col">
+					<div class="blog-posts single-post">
+
+						<article class="post post-large blog-single-post border-0 m-0 p-0">
+							<div class="post-image ms-0">
+                                    {% for image in images %}
+                                    <a href="{{asset("file/procedure/"~ image.imageName)}}" target="_blank">
+									<img src="{{asset("file/procedure/"~ image.imageName)}}" alt="{{ procedure.name }}">
+                                    </a>
+                                    {% endfor %}
+									
+								</div>
+
+								<div class="post-date ms-0">
+									<span class="day text-dark">{{procedure.createdAt|date('d')}}</span>
+									<span class="month text-dark">{{procedure.createdAt|date('M')}}</span>
+								</div>
+
+								<div class="post-content ms-0">
+
+									<h2 class="font-weight-semi-bold">
+										<a href="blog-post.html">{{procedure.title}}</a>
+									</h2>
+
+										<span>
+											<i class="far fa-user"></i>
+											Par
+											<a href="#">{{procedure.agent}}</a>
+										</span>
+										<span>
+											<i class="far fa-folder"></i>
+											<a href="#">{% for categorieArray in procedure.categorie %}{{categorieArray.name}}{% endfor %}</a>,
+										</span>
+
+									</div>
+
+									<p>{{procedure.content|raw}}</p>
+
+									
+
+									
+								</article>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		{% endblock %}

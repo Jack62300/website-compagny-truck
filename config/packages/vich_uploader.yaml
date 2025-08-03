@@ -1,0 +1,32 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+       procedure:
+           uri_prefix: /file/procedure
+           upload_destination: '%kernel.project_dir%/public/file/procedure'
+           namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+           inject_on_load: false
+           delete_on_update: true
+           delete_on_remove: true
+       registre:
+           uri_prefix: /file/registre
+           upload_destination: '%kernel.project_dir%/public/file/registre'
+           namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+           inject_on_load: false
+           delete_on_update: true
+           delete_on_remove: true
+       personelle:
+           uri_prefix: /file/personelle
+           upload_destination: '%kernel.project_dir%/public/file/personelle'
+           namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+           inject_on_load: false
+           delete_on_update: true
+           delete_on_remove: true
+       personelle_vehicle:
+           uri_prefix: /file/personelle/vehicles
+           upload_destination: '%kernel.project_dir%/public/file/personelle/vehicles'
+           namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+           inject_on_load: false
+           delete_on_update: true
+           delete_on_remove: true

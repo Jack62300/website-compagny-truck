@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}TWV | Home
+			{% endblock %}
+		</title>
+		<link rel="shortcut icon" href="{{asset('img/favicon.ico')}}" type="image/x-icon"/>
+		<link
+		rel="apple-touch-icon" href="{{asset('img/apple-touch-icon.png')}}">
+
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+		<!-- Web Fonts  -->
+		<link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800%7CShadows+Into+Light&display=swap" rel="stylesheet" type="text/css">
+
+		<!-- Vendor CSS -->
+
+		<!-- Skin CSS -->
+
+
+		<!-- Theme Custom CSS -->
+
+			{% block stylesheets %}
+			<link id="skinCSS" rel="stylesheet" href="{{asset('css/skins/default.css')}}"> <link rel="stylesheet" href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}">
+			<link rel="stylesheet" href="{{asset('vendor/fontawesome-free/css/all.min.css')}}">
+			<link rel="stylesheet" href="{{asset('vendor/animate/animate.compat.css')}}">
+			<link rel="stylesheet" href="{{asset('vendor/simple-line-icons/css/simple-line-icons.min.css')}}">
+			<link rel="stylesheet" href="{{asset('vendor/owl.carousel/assets/owl.carousel.min.css')}}">
+			<link rel="stylesheet" href="{{asset('vendor/owl.carousel/assets/owl.theme.default.min.css')}}">
+			<link
+			rel="stylesheet" href="{{asset('vendor/magnific-popup/magnific-popup.min.css')}}">
+
+			<!-- Theme CSS -->
+			<link rel="stylesheet" href="{{asset('css/theme.css')}}">
+			<link rel="stylesheet" href="{{asset('css/theme-elements.css')}}">
+			<link rel="stylesheet" href="{{asset('css/theme-blog.css')}}">
+			<link rel="stylesheet" href="{{asset('css/theme-shop.css')}}">
+			<link rel="stylesheet" href="{{asset('css/custom.css')}}">
+
+			<link rel="stylesheet" href="{{asset('vendor/rs-plugin/css/settings.css')}}">
+			<link rel="stylesheet" href="{{asset('vendor/rs-plugin/css/layers.css')}}">
+			<link rel="stylesheet" href="{{asset('vendor/rs-plugin/css/navigation.css')}}">
+
+
+		{% endblock %}
+		{% block javascripts %}
+		<script src="{{asset('vendor/plugins/js/plugins.min.js')}}"></script>
+
+		<!-- Theme Base, Components and Settings -->
+		<script src="{{asset('js/theme.js')}}"></script>
+
+		<!-- Current Page Vendor and Views -->
+		<script src="{{asset('js/views/view.contact.js')}}"></script>
+
+		<!-- Theme Custom -->
+		<script src="{{asset('js/custom.js')}}"></script>
+
+		<!-- Theme Initialization Files -->
+		<script src="{{asset('js/theme.init.js')}}"></script>
+
+		<script src="{{asset('vendor/rs-plugin/js/jquery.themepunch.tools.min.js')}}"></script>
+		<script src="{{asset('vendor/rs-plugin/js/jquery.themepunch.revolution.min.js')}}"></script>
+		{# {% block importmap %}{{ importmap('app') }}{% endblock %} #}
+		
+		{% endblock %}
+	</head>
+	<body class="" data-plugin-page-transition="" data-loading-overlay="" data-plugin-options="{'hideDelay': 0, 'effect': 'pulse'}">
+
+		<header id="header" class="header-effect-shrink" data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': false, 'stickyChangeLogo': true, 'stickyStartAt': 120, 'stickyHeaderContainerHeight': 70}">
+			<div class="header-body border-top-0">
+				<div class="header-top header-top-borders">
+					<div class="container-fluid h-100">
+						<div class="header-row h-100">
+							<div class="header-column justify-content-start">
+								<div class="header-row">
+									<nav class="header-nav-top">
+										<ul
+											class="nav nav-pills">
+
+
+											{# <a class="nav-link ps-0" href="about-us.html"><i class="fas fa-angle-right"></i> En savoir plus</a> #}
+
+
+											<li class="nav-item dropdown nav-item-left-border d-none d-sm-block nav-item-left-border-remove nav-item-left-border-md-show">
+												<a class="nav-link" href="#" role="button" id="dropdownLanguage" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Numéro utile
+													<i class="fas fa-angle-down"></i>
+												</a>
+												<div class="dropdown-menu" aria-labelledby="dropdownLanguage">
+												{% for number in numbers %}
+													<a class="dropdown-item" href="#">
+														{{ number.name }} {{ number.role }}  <span class="badge badge-quaternary badge-sm rounded-pill text-uppercase px-2 py-1 me-1">{{ number.number }}</span></a>
+													
+												{% endfor  %}
+												</div>
+											</li>
+											<li class="nav-item dropdown nav-item-left-border d-none d-sm-block nav-item-left-border-remove nav-item-left-border-md-show">
+												<a class="nav-link" href="#" role="button" id="dropdownLanguage" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Numéro utile Externe
+													<i class="fas fa-angle-down"></i>
+												</a>
+												<div class="dropdown-menu" aria-labelledby="dropdownLanguage">
+												{% for number in numbers %}
+													<a class="dropdown-item" href="#">
+														{{ number.name }} {{ number.role }}  <span class="badge badge-quaternary badge-sm rounded-pill text-uppercase px-2 py-1 me-1">{{ number.number }}</span></a>
+													
+												{% endfor  %}
+												</div>
+											</li>
+
+											{% if app.user %}
+												{% if is_granted('ROLE_ADMIN') %}
+
+													<li class="nav-item dropdown nav-item-left-border d-none d-sm-block nav-item-left-border-remove nav-item-left-border-md-show">
+														<a class="nav-link" href="#" role="button" id="dropdownLanguage" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															Outils
+															<i class="fa-solid fa-user-tie"></i>
+														</a>
+														<div class="dropdown-menu" aria-labelledby="dropdownLanguage">
+															<a class="dropdown-item" href="{{path('admin')}}" target="_blank">
+																Administration</a>
+															{# <a class="dropdown-item" href="#">
+																Création d'utilisateur</a> #}
+														</div>
+													</li>
+
+												{% endif %}
+											{% endif %}
+										</ul>
+									</nav>
+								</div>
+							</div>
+							<div class="header-column justify-content-end">
+								<div class="header-row">
+									<ul class="">
+										{% if app.user %}
+											{# {% if is_granted('ROLE_ADMIN') %} #}
+
+											{# <a  href="{{path('admin')}}" class="btn btn-modern btn-default btn-persouser rounded-0 mb-2"><i class="fa-solid fa-user-tie"></i> Administration</a>
+																						                                        <a class="btn btn-modern btn-danger btn-persouser rounded-0 mb-2"><i style="font-size:1.2em;" class="icon-user icons"></i> Ajouter un Utilisateur</a> #}
+											{# {% endif %} #}
+											{# <a class="btn btn-modern btn-quaternary rounded-0 mb-2"><i style="font-size:1.2em;" class="icon-user icons"></i> Bienvenue, {{ app.user.username }} !</a> #}
+												<li class="btn btn-modern btn-quaternary rounded-0 mb-2 nav-item dropdown d-none d-sm-block nav-item-left-border-remove nav-item-left-border-md-show"> <a class="nav-link" href="#" role="button" id="dropdownLanguage" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Bienvenue,
+													{{ app.user.username }}
+													!
+													<i class="fas fa-angle-down"></i>
+												</a>
+												<div class="dropdown-menu" aria-labelledby="dropdownLanguage">
+													<a class="dropdown-item" href="{{path('app_logout')}}">
+														Déconnexion</a>
+												</div>
+											</li>
+
+										{% else %}
+											<a href="{{path('app_login')}}" class="btn btn-modern btn-quaternary rounded-0 mb-2">
+												<i style="font-size:1.2em;" class="icon-user icons"></i>
+												Connexion
+											</a>
+										{% endif %}
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="header-container container-fluid">
+					<div class="header-row">
+						<div class="header-column">
+							<div class="header-row">
+								<div class="header-logo">
+									<a href="{{path('app_home')}}">
+										<img alt="TWV" width="140" height="80" data-sticky-width="140" data-sticky-height="65" src="{{asset('img/twvlogo.png')}}">
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="header-column justify-content-end">
+							<div class="header-row">
+								<div class="header-nav header-nav-stripe order-2 order-lg-1">
+									<div class="header-nav-main header-nav-main-square ">
+										<nav class="collapse bg-dark">
+											<ul class="nav nav-pills" id="mainNav">
+												<li class="dropdown">
+													<a class="dropdown-item dropdown-toggle" href="{{path('app_home')}}">
+														Accueil
+													</a>
+
+												</li>
+												<li class="dropdown">
+													<a class="dropdown-item dropdown-toggle" href="{{path('app_consigne')}}">
+														Consignes
+													</a>
+
+												</li>
+												<li class="dropdown">
+														<a class="dropdown-item dropdown-toggle" href="#">
+															Procédure
+														<i class="fas fa-chevron-down"></i></a>
+														<ul class="dropdown-menu">
+														{% for categorie in categories %}
+														
+															<li class="dropdown-submenu">
+																<a class="dropdown-item" href="#">{{categorie.name}}<i class="fas fa-chevron-down"></i></a>
+																<ul class="dropdown-menu">
+																{% for procedure in procedures %}
+																	{% for category in procedure.categorie %}
+																		{% if category.name == categorie.name %}
+																			<li><a class="dropdown-item" href="{{ path('app_procedure_view',{'id': procedure.id})}}">{{procedure.title}}</a> </li>
+																		{% endif %}
+																	{% endfor %}
+																{% endfor %}
+																</ul>
+															</li>
+															{%  endfor %}
+														</ul>
+													</li>
+												<li class="dropdown">
+													<a class="dropdown-item dropdown-toggle" href="{{path('app_reservation')}}">
+														Réservation
+													</a>
+
+												</li>
+												<li class="dropdown">
+													<a class="dropdown-item dropdown-toggle">
+														Evénements
+													</a>
+													<ul class="dropdown-menu">
+														<li>
+															<a class="dropdown-item" href="#">Déclaration d'incident</a>
+														</li>
+														
+													</ul>
+												</li>
+												<li class="dropdown">
+													<a class="dropdown-item dropdown-toggle" href="#">
+														Activitées
+													</a>
+													<ul class="dropdown-menu">
+														<li>
+															<a class="dropdown-item" href="#">Rapport de ronde</a>
+														</li>
+														
+													</ul>
+												</li>
+												<li class="dropdown">
+													<a class="dropdown-item dropdown-toggle" href="#">
+														Infos de site
+													</a>
+													<ul class="dropdown-menu">
+														<li>
+															<a class="dropdown-item" href="{{path('app_personelle_view')}}">Liste du personelles</a>
+														</li>
+													
+													</ul>
+												</li>
+												<li class="dropdown">
+													<a class="dropdown-item dropdown-toggle" href="#">
+														Soumettre une demande
+													</a>
+
+												</li>
+												{# <li class="dropdown">
+																																						<a class="dropdown-item dropdown-toggle" href="#">
+																																							
+																																						</a>
+																																					</li> #}
+
+											</ul>
+										</nav>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html></header>
+{% for label, messages in app.flashes(['success', 'warning', 'danger','info']) %}
+    {% for message in messages %}
+	<div class="alert alert-{{ label }} alert-dismissible" role="alert">
+										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+										<strong><i class="fas fa-exclamation-triangle"></i>{{ label }}</strong> {{ message }}
+										<ul>
+										
+									</div>
+    {% endfor %}
+{% endfor %}
+{% block body %}{% endblock %}
+
+</body></html>

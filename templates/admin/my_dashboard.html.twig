@@ -1,0 +1,45 @@
+{# templates/admin/my_dashboard.html.twig #}
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block main %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="card card-dashboard" style="width: 100%;">
+					<div class="card-header">
+						<h3>Pret de clef</h3>
+					</div>
+
+					<table class="table table-light" style="border-radius: 15px;">
+						<thead class="thead-light">
+							<tr>
+								<th scope="col">Nom / Numéro de clef</th>
+								<th scope="col">Nom du demandeur</th>
+								<th scope="col">Status</th>
+								<th scope="col">Agent prêteur</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								{% for clef in clefs %}
+									<tr>
+										<th scope="row">{{ clef.intituler }}</th>
+										<td>{{ clef.name }}</td>
+										<td>
+											{% if clef.status == 1 %}
+												Non restitué
+											{% else %}
+												Restitué
+											{% endif %}
+										</td>
+                                        <td>{{ clef.agent }}</td>
+									</tr>
+								{% endfor %}
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+    {# ... #}
+{% endblock main %}

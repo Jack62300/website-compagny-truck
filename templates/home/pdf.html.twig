@@ -1,0 +1,48 @@
+{# product/pdf.html.twig #}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{{ title }}</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+			}
+			.product-details {
+				margin-bottom: 20px;
+			}
+			.product-details h2 {
+				font-size: 24px;
+			}
+			.product-details p {
+				margin: 5px 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="product-details container">
+
+
+			<div class="row">
+			
+				{% for image in images %}
+                
+                {# <img src="{{ absolute_url(vich_uploader_asset(imagePath, 'imageFile')) }}" style="max-width:300px; max-height:300px;" /> #}
+				<div class="col-lg-12">
+					<img src="{{ absolute_url(asset('/file/procedure/'~ image.imageName)) }}" style="max-width:300px; max-height:300px;" alt="Image"> 
+				</div>
+				{% endfor %}
+				</div>
+			
+
+
+			<div style="background-color:red; color: white; padding 15px; text-align:center;">{{ notice }}</div>
+			<h2 style="background-color:#dcdcdc; color:black; width: 100%;">{{ date|date('d/m/y à h:i') }}
+				par
+				{{ name }}</h2>
+			<p>{{ content }}</p>
+			{# Ajoutez d'autres détails du produit selon vos besoins #}
+		</div>
+	</body>
+</html>
