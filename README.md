@@ -25,3 +25,29 @@ Ce projet est un outil de gestion conçu pour aider à gérer les différentes t
 
    ```bash
    git clone https://github.com/Jack62300/website-compagny-truck.git
+
+   ![Présentation](https://image.noelshack.com/fichiers/2025/31/7/1754228922-image.png)
+
+
+
+## Routes disponible
+
+1. Les lien disponible sur le site.
+  - admin                          /twvadmin
+  - app_consigne                   /consigne
+  - app_home                       /home
+  - app_remedit                    /action_edit/{id}
+  - app_keyedit                    /action_edit_key/{id}
+  - app_index                      /
+  - app_procedure_view             /procedure/{id}
+  - app_personelle_view            /listePersonelles
+  - app_register                   /register
+  - app_verify_email               /verify/email
+  - app_registre                   /registre
+  - app_reservation                /reservation
+  - app_status_edit                /update_status/{id}
+  - app_forgot_password_request    /reset-password
+  - app_check_email                /reset-password/check-email
+  - app_reset_password             /reset-password/reset/{token}
+  - app_login                      /connexion
+  - app_logout                     /logout
